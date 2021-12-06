@@ -1,8 +1,10 @@
 # Simple-Trojan-Horse
  
 ## 簡要介紹
-> 這是一個簡單的木馬病毒實作。\n
+> 這是一個簡單的木馬病毒實作。
+> 
 > 雖然沒有實作傳播與將本體寫入開機自啟動區塊的功能，但目前版本能透過 Socket 自 Server 傳送 ==Shell Command== 至對 Client (被感染裝置) ，從而達到控制別人的電腦~~做壞壞的事~~之目的。
+> 
 > 使用情境為假設目標裝置為 Windows 10 以上之 x64 作業系統、有連上網路，下載了本專案的 Client 檔案並執行。
 
 ## 支持功能
@@ -20,8 +22,11 @@
 - `client [Client Index] [Shell Command]` : 使編號為 `[Client Index]` 的 Client 執行 `[Shell Command]`
 - `client all [Command]`: 使全部的 Client 都執行 `[Command]`
 > 假性關閉: 不會關閉程式，會在冷卻時間後嘗試重新連線。
+> 
 > 真性關閉: 關閉程式，不會再嘗試重新連線。
+> 
 > `[Command]` = `stop` + `stop by user` + `[Shell Command]`
+> 
 > `[Shell Command]` 請參考[這裡](https://docs.microsoft.com/zh-tw/windows-server/administration/windows-commands/windows-commands)。
 
 ## 運行要求
