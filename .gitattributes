@@ -1,4 +1,0 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-*.rb linguist-language=Python
-**/Simple-Trojan-Horse-virtualenv/* linguist-vendored
