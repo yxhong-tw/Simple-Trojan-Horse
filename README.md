@@ -1,4 +1,6 @@
 # Simple-Trojan-Horse
+
+This repository is the project of the Computer Network course during the autumn semester of 2021 at NCU.
  
 ## 簡要介紹
 > 這是一個簡單的木馬病毒實作。
